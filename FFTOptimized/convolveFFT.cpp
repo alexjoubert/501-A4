@@ -9,6 +9,8 @@
 using namespace std;
 
 #define SWAP(a,b)  tempr=(a);(a)=(b);(b)=tempr
+#define LOG2(n)		 (n) = (log(n)/LN_2) + 1; // Code Tuning 4: Inline log2(n) + 1 function
+#define LN_2			 0.69314718056						// Code Tuning 5: Constant for ln(2) 								
 
 /*  Function prototypes  */
 void convolve(double input_signal[], int input_size, double impulse_response[], int impulse_size, double *& output_signal, int output_size);
@@ -195,7 +197,7 @@ int main(int argc, char* argv[])
 *****************************************************************************/
 void convolve(double input_signal[], int input_size, double impulse_response[], int impulse_size, double *& output_signal, int output_size)
 {
-	int pow2 = log2(input_size) + 1;
+	int pow2 = LOG2(input_size);
 	pow2 = pow(2, pow2);
 	int double_pow2 = 2 * pow2;
 

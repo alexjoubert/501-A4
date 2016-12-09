@@ -1,7 +1,8 @@
+
 CC=g++
 
 CFLAGS=-c
-PFLAGS=-pg
+PFLAGS=-p
 LFLAGS=-L ../lib/lib
 IFLAGS=-I ../lib/include
 LIBS=../lib/lib/libsndfile.a
@@ -16,7 +17,7 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(PFLAGS) $(OBJECTS) -o $@ $(LIBS)
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(PFLAGS) $(LFLAGS) $(IFLAGS) $(FLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(PFLAGS) $(LFLAGS) $(IFLAGS) $(FLAGS) $< -Ofast $@
 
 clean:
-	rm *.o $(EXECUTABLE)
+rm *.o $(EXECUTABLE)
