@@ -5,9 +5,9 @@
 #include <time.h>
 #include <algorithm>
 #include <iostream>
-#include <math.h> 
+#include <math.h>
 using namespace std;
-	
+
 #define SWAP(a,b)  tempr=(a);(a)=(b);(b)=tempr
 
 /*  Function prototypes  */
@@ -204,12 +204,33 @@ void convolve(double input_signal[], int input_size, double impulse_response[], 
 	double *y_complex = new double[double_pow2];
 
 	//zero pad arrays
-	for (int i = 0; i < double_pow2; i++)
+	// Code Tuning 2: Fusion: merged 3 loops into one
+	// Code Tuning 3: Partial Unrolling: unrolled loop to increment by 3
+	for (int i = 0; i < double_pow2 - 2; i+=3)
+	{
 		x_complex[i] = 0.0;
-	for (int i = 0; i < double_pow2; i++)
+		x_complex[i + 1] = 0.0;
+		x_complex[i + 2] = 0.0;
 		h_complex[i] = 0.0;
-	for (int i = 0; i < double_pow2; i++)
+		h_complex[i + 1] = 0.0;
+		h_complex[i + 2] = 0.0;
 		y_complex[i] = 0.0;
+		y_complex[i + 1] = 0.0;
+		y_complex[i + 2] = 0.0;
+
+		if (i == double_pow2 - 2) {
+			x_complex[i - 1] = 0.0;
+			x_complex[i - 2] = 0.0;
+			h_complex[i - 1] = 0.0;
+			h_complex[i - 2] = 0.0;
+			y_complex[i - 1] = 0.0;
+			y_complex[i - 2] = 0.0;
+		} else if (i == double_pow2 - 1) {
+			x_complex[i - 1] = 0.0;
+			h_complex[i - 1] = 0.0;
+			y_complex[i - 1] = 0.0;
+		}
+	}
 
 	// Load data into x_complex to be used in fft
 	for (int i = 0; i < input_size; i++)
@@ -239,4 +260,3 @@ void convolve(double input_signal[], int input_size, double impulse_response[], 
 		output_signal[i] = y_complex[i * 2] / (double_pow2 * 2);
 	}
 }
-
