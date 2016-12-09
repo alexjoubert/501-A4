@@ -1,8 +1,7 @@
-
 CC=g++
 
 CFLAGS=-c
-PFLAGS=-p
+PFLAGS=-pg
 LFLAGS=-L ../lib/lib
 IFLAGS=-I ../lib/include
 LIBS=../lib/lib/libsndfile.a
@@ -14,10 +13,10 @@ EXECUTABLE=convolve
 all: convolve
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(PFLAGS) $(OBJECTS) -o $@ $(LIBS)
+	$(CC) -O2 $(PFLAGS) $(OBJECTS) -o $@ $(LIBS)
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(PFLAGS) $(LFLAGS) $(IFLAGS) $(FLAGS) $< -Ofast $@
+	$(CC) -O2 $(CFLAGS) $(PFLAGS) $(LFLAGS) $(IFLAGS) $(FLAGS) $< -o $@
 
 clean:
-rm *.o $(EXECUTABLE)
+	rm *.o $(EXECUTABLE)
