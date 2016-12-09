@@ -213,11 +213,11 @@ void convolve(double input_signal[], int input_size, double impulse_response[], 
 
 	// Load data into x_complex to be used in fft
 	for (int i = 0; i < input_size; i++)
-		x_complex[2 * i] = input_signal[i];
+		x_complex[i + 1] = input_signal[i];	// Code Tuning 1: Strength Reduction: addition instead of mul
 
 	// Load data into h_complex to be used in fft
 	for (int i = 0; i < impulse_size; i++)
-		h_complex[2 * i] = impulse_response[i];
+		h_complex[i + 1] = impulse_response[i];	// Code Tuning 1: Strength Reductio: addition instead of mul
 
 	// FFT
 	four1(h_complex - 1, pow2, 1);
